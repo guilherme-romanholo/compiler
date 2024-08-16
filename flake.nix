@@ -40,6 +40,10 @@
                     flex
                   ];
 
+                  scripts.build = {
+                    exec = "make; ./compiler < tests/code1; make clean";
+                  };
+
                   enterShell = ''
                     printf "\033[96mWelcome to Compiler Project!\033[0m\n"
                     gcc --version | grep gcc
