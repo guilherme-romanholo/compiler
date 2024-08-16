@@ -30,14 +30,20 @@
               inherit inputs pkgs;
               modules = [
                 {
+                  languages.c = {
+                    enable = true;
+                    debugger = pkgs.gdb;
+                  };
+
                   # https://devenv.sh/reference/options/
                   packages = with pkgs; [ 
-                    cmake
-                    gccStdenv
+                    flex
                   ];
 
                   enterShell = ''
-                    echo "Welcome to Compiler Project!"
+                    printf "\033[96mWelcome to Compiler Project!\033[0m\n"
+                    gcc --version | grep gcc
+                    flex --version
                   '';
                 }
               ];
