@@ -2,7 +2,7 @@ CC = gcc
 LEX = flex
 CFLAGS = -Wall -g
 LDFLAGS = 
-TARGET = compiler
+TARGET = compiler.out
 LEX_SRC = src/analex.l
 LEX_OUT = lex.yy.c
 
