@@ -102,7 +102,7 @@ COMMENT      #.*\n
 {COMMENT}       { lines++; }
 
 {ID}            TOKEN(ID)
-{DIGIT}{ID}	    { ERROR(yytext); errors++; }
+{DIGIT}+{ID}    { ERROR(yytext); errors++; }
 \n              { lines++; }
 .               { ERROR(yytext); errors++; }
 
