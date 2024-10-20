@@ -2,7 +2,7 @@ CC = gcc
 LEX = flex
 BISON = bison
 
-CFLAGS = -Wall -g -DPRINT
+CFLAGS = -g -DPRINT
 LDFLAGS = 
 
 TARGET = compiler.out
