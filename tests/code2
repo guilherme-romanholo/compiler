@@ -1,6 +1,6 @@
 main() -> int {
 
-    // Declara string
+    #Declara string
     string nome = "renata";
 
     print(determinante_matriz);

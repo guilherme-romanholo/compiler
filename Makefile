@@ -1,12 +1,18 @@
 CC = gcc
 LEX = flex
-CFLAGS = -Wall -g
+BISON = bison
+
+CFLAGS = -Wall -g -DPRINT
 LDFLAGS = 
+
 TARGET = compiler.out
-LEX_SRC = src/analex.l
+
+LEX_SRC = src/scanner.l
 LEX_OUT = lex.yy.c
 
-all: $(TARGET)
+all: 
+
+scanner: $(TARGET)
 
 $(TARGET): $(LEX_OUT)
 	$(CC) $(CFLAGS) $(LEX_OUT) -o $(TARGET) $(LDFLAGS)

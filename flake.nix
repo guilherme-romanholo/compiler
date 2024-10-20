@@ -37,6 +37,7 @@
 
                   # https://devenv.sh/reference/options/
                   packages = with pkgs; [ 
+                    bison
                     flex
                   ];
 
