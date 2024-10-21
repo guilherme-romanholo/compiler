@@ -1,9 +1,11 @@
+%option noyywrap
+
 %{
 #define RESET   "\033[0m"
 #define GREEN   "\033[32m"
 #define RED     "\033[31m"
 
-#define ERROR(t) printf(RED "Invalid Token in line %d: " RESET "%s" "\n", lines, t);
+#define ERROR(t) printf(RED "Invalid Token, line %d: " RESET "%s" "\n", lines, t);
 
 #ifdef PRINT
 #define TOKEN(t) printf(GREEN "Token: " RESET #t "\n");
@@ -101,17 +103,18 @@ COMMENT      #.*\n
 {RKEY}          TOKEN(LBRACKET)
 {COMMENT}       { lines++; }
 
+\n              { lines++; }
+
 {ID}            TOKEN(ID)
 {DIGIT}+{ID}    { ERROR(yytext); errors++; }
-\n              { lines++; }
 .               { ERROR(yytext); errors++; }
 
 %%
 
-int yywrap();
-
-    int main() {
+#ifdef PRINT
+int main() {
     yylex();
+
     printf(RED "\nTotal Errors: %d\n" RESET, errors);
 
     if(errors == 0)
@@ -119,7 +122,4 @@ int yywrap();
 
     return 0;
 }
-
-int yywrap() {
-    return 1;
-}
+#endif
