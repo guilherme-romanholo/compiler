@@ -1,26 +1,29 @@
-CC = gcc
-LEX = flex
-BISON = bison
+# Definição dos arquivos
+LEXER = lex.yy.c
+PARSER = parser.tab.c
+PARSER_HEADER = parser.tab.h
+EXEC = analisador
+LEX = src/scanner.l  # Nome do arquivo Flex
+YACC = src/parser.y  # Nome do arquivo Bison
 
-CFLAGS = -g -DPRINT
-LDFLAGS = 
+# Flags de compilação
+CFLAGS = -g
 
-TARGET = compiler.out
+# Regras principais
+all: $(EXEC)
 
-LEX_SRC = src/scanner.l
-LEX_OUT = lex.yy.c
+# Regra para gerar o executável
+$(EXEC): $(LEXER) $(PARSER)
+	@gcc $(CFLAGS) -o $(EXEC) $(LEXER) $(PARSER) -lfl -DYYDEBUG
 
-all: 
+# Regra para gerar o arquivo léxico com o Flex
+$(LEXER): $(LEX)
+	@flex $(LEX) 
 
-scanner: $(TARGET)
+# Regra para gerar os arquivos do parser com o Bison
+$(PARSER): $(YACC)
+	@bison -d $(YACC)
 
-$(TARGET): $(LEX_OUT)
-	$(CC) $(CFLAGS) $(LEX_OUT) -o $(TARGET) $(LDFLAGS)
-
-$(LEX_OUT): $(LEX_SRC)
-	$(LEX) $(LEX_SRC)
-
+# Limpeza dos arquivos gerados
 clean:
-	rm -f $(LEX_OUT) $(TARGET)
-
-.PHONY: all clean
+	@rm -f $(LEXER) $(PARSER) $(PARSER_HEADER) $(EXEC)

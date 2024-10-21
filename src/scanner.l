@@ -1,5 +1,3 @@
-%option noyywrap
-
 %{
 #define RESET   "\033[0m"
 #define GREEN   "\033[32m"
@@ -10,6 +8,7 @@
 #ifdef PRINT
 #define TOKEN(t) printf(GREEN "Token: " RESET #t "\n");
 #else
+#include "parser.tab.h"
 #define TOKEN(t) return(t);
 #endif
 
@@ -68,10 +67,10 @@ COMMENT      #.*\n
 {INTEGER}       TOKEN(INTEGER)
 {REAL}          TOKEN(REAL)
 
-{INT_T}         TOKEN(INT_T)
-{STR_T}         TOKEN(STR_T)
-{CHAR_T}        TOKEN(CHAR_T)
-{FLOAT_T}       TOKEN(FLOAT_T)
+{INT_T}         TOKEN(TYPE)
+{STR_T}         TOKEN(TYPE)
+{CHAR_T}        TOKEN(TYPE)
+{FLOAT_T}       TOKEN(TYPE)
 
 {IF}            TOKEN(IF)
 {ELSE}          TOKEN(ELSE)
@@ -79,18 +78,18 @@ COMMENT      #.*\n
 {FOR}           TOKEN(FOR)
 {RETURN}        TOKEN(RETURN)
 
-{PLUS}          TOKEN(PLUS)
-{MINUS}         TOKEN(MINUS)
-{MULT}          TOKEN(MULT)
-{DIV}           TOKEN(DIV)
+{PLUS}          TOKEN(OPERATOR)
+{MINUS}         TOKEN(OPERATOR)
+{MULT}          TOKEN(OPERATOR)
+{DIV}           TOKEN(OPERATOR)
 {ASSIGN}        TOKEN(ASSIGN)
 
-{EQUAL}         TOKEN(EQUAL)
-{DIFF}          TOKEN(DIFF)
-{LT}            TOKEN(LT)
-{LTE}           TOKEN(LTE)
-{GT}            TOKEN(GT)
-{GTE}           TOKEN(GTE)
+{EQUAL}         TOKEN(LOGIC)
+{DIFF}          TOKEN(LOGIC)
+{LT}            TOKEN(LOGIC)
+{LTE}           TOKEN(LOGIC)
+{GT}            TOKEN(LOGIC)
+{GTE}           TOKEN(LOGIC)
 
 {SPACE}
 {COLON}         TOKEN(COLON)
@@ -111,15 +110,6 @@ COMMENT      #.*\n
 
 %%
 
-#ifdef PRINT
-int main() {
-    yylex();
-
-    printf(RED "\nTotal Errors: %d\n" RESET, errors);
-
-    if(errors == 0)
-        printf(GREEN "Success. No Errors.\n" RESET);
-
-    return 0;
+int yywrap() {
+    return 1;
 }
-#endif
