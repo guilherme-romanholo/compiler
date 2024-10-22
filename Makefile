@@ -1,29 +1,40 @@
-# Definição dos arquivos
-LEXER = lex.yy.c
-PARSER = parser.tab.c
-PARSER_HEADER = parser.tab.h
-EXEC = analisador
-LEX = src/scanner.l  # Nome do arquivo Flex
-YACC = src/parser.y  # Nome do arquivo Bison
+# Programs
+CC    = gcc
+LEX   = flex
+YACC  = bison
+FLAGS = -lfl
 
-# Flags de compilação
-CFLAGS = -g
+# Sources
+LEX_SRC  = src/scanner.l
+YACC_SRC = src/parser.y
+MAIN_SRC = src/main.c
 
-# Regras principais
-all: $(EXEC)
+# Outputs
+BIN         = compiler
+LEX_OUT     = lex.yy.c
+YACC_OUT    = parser.tab.c
+YACC_HEADER = parser.tab.h
 
-# Regra para gerar o executável
-$(EXEC): $(LEXER) $(PARSER)
-	@gcc $(CFLAGS) -o $(EXEC) $(LEXER) $(PARSER) -lfl -DYYDEBUG
+# Debug
+DEBUG ?= 0
+ifeq ($(DEBUG), 1)
+	FLAGS += -DPRINT -DYYDEBUG
+endif
 
-# Regra para gerar o arquivo léxico com o Flex
-$(LEXER): $(LEX)
-	@flex $(LEX) 
+# Rules
+all: $(BIN)
 
-# Regra para gerar os arquivos do parser com o Bison
-$(PARSER): $(YACC)
-	@bison -d $(YACC)
+$(BIN): $(LEX_OUT) $(YACC_OUT)
+	$(CC) -o $(BIN) $(MAIN_SRC) $(LEX_OUT) $(YACC_OUT) $(FLAGS)
 
-# Limpeza dos arquivos gerados
+$(LEX_OUT): $(LEX_SRC)
+	$(LEX) $(LEX_SRC)
+
+$(YACC_OUT): $(YACC_SRC)
+	$(YACC) -d $(YACC_SRC)
+
+run: all
+	./$(BIN)
+
 clean:
-	@rm -f $(LEXER) $(PARSER) $(PARSER_HEADER) $(EXEC)
+	@rm -f $(BIN) $(LEX_OUT) $(YACC_OUT) $(YACC_HEADER)
