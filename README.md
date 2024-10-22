@@ -1,8 +1,8 @@
 # Compiler Project
 
-### How to run
-- `make scanner`: compile scanner.l
-- `./compiler.out` or `./compiler.out < tests/codeX`: run lexical analyzer
+### Running the Project
+- `make all`: Build project
+- `make run`: Build and run project
 - `make clean`: clean build dependencies
 
 ### Obs

@@ -52,20 +52,17 @@ expressao:
 
 %%
 
-void yyerror(const char *s) {
-    printf("Erro: %s\n", s);
-}
+void yyerror(const char *s) { printf("Erro: %s\n", s); }
 
 int main(int argc, char **argv) {
 
-    #if YYDEBUG == 1
+#if YYDEBUG == 1
     extern int yydebug;
     yydebug = 1;
-    #endif
+#endif
 
-    //++argv, --argc; //desconsidera o nome do programa
     if ( argc > 0 )
-        yyin = fopen(argv[1], "r" );
+        yyin = fopen(argv[1], "r");
     else
         yyin = stdin;
     

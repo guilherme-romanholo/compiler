@@ -1,4 +1,6 @@
 .devenv
 .direnv
-compiler.out
+compiler
 lex.yy.c
+parser.tab.c
+parser.tab.h
