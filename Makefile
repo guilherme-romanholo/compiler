@@ -7,7 +7,6 @@ FLAGS = -lfl
 # Sources
 LEX_SRC  = src/scanner.l
 YACC_SRC = src/parser.y
-MAIN_SRC = src/main.c
 
 # Outputs
 BIN         = compiler
@@ -25,7 +24,7 @@ endif
 all: $(BIN)
 
 $(BIN): $(LEX_OUT) $(YACC_OUT)
-	$(CC) -o $(BIN) $(MAIN_SRC) $(LEX_OUT) $(YACC_OUT) $(FLAGS)
+	$(CC) -o $(BIN) $(LEX_OUT) $(YACC_OUT) $(FLAGS)
 
 $(LEX_OUT): $(LEX_SRC)
 	$(LEX) $(LEX_SRC)
