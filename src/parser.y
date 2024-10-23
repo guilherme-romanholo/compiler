@@ -1,7 +1,6 @@
 %{
     #include <stdio.h>
     #include <stdlib.h>
-   // #include "lex.yy.c"
 
     extern int yylex(void);  // Declaração do lexer
     extern int errors;
@@ -14,6 +13,7 @@
 %token OPERATOR ASSIGN
 %token LOGIC
 %token COLON SEMICOLON RPARENT LPARENT RBRACKET LBRACKET LKEY RKEY
+%start comandos
 %%
 
 /* A gramática da sua linguagem vai aqui */
@@ -26,43 +26,68 @@
     /*| declaracao declaracoes
     ;*/
 
-declaracao:
-    TYPE lista_var SEMICOLON
-    ;
 
-lista_var:
-    ID | ID COLON lista_var
-    ;
-
-/*comandos:
-    /* Regras para os comandos da linguagem */
-  /*  | comando comandos
+comandos: 
+    comando comandos 
+    | comando
+    |
     ;
 
 comando:
-    VAR '=' expressao SEPARATOR
+    declaracao SEMICOLON
+    | atribuicao SEMICOLON
+    | condicional
+    ;
+
+declaracao:
+    TYPE lista_var
+    ;
+
+lista_var:
+    ID 
+    | lista_var COLON ID 
+    | atribuicao 
+    | lista_var COLON atribuicao
+    ;
+
+atribuicao:
+    ID ASSIGN expressao
+    ;
+
+condicional:
+    IF RPARENT condicao LPARENT bloco_comandos
+    ;
+
+condicao:
+    expressao LOGIC expressao
+    ;
+
+bloco_comandos:
+    RKEY comandos LKEY
     ;
 
 expressao:
     INTEGER
     | REAL
-    | VAR
-    | expressao MATH expressao
-    ; */
+    | ID
+    | expressao OPERATOR expressao
+    ;
 
 %%
 
-void yyerror(const char *s) { printf("Erro: %s\n", s); }
+void yyerror(const char *s) {
+    printf("Erro: %s\n", s);
+}
 
 int main(int argc, char **argv) {
 
-#if YYDEBUG == 1
+    #if YYDEBUG == 1
     extern int yydebug;
     yydebug = 1;
-#endif
+    #endif
 
     if ( argc > 0 )
-        yyin = fopen(argv[1], "r");
+        yyin = fopen(argv[1], "r" );
     else
         yyin = stdin;
     
