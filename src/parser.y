@@ -2,90 +2,134 @@
     #include <stdio.h>
     #include <stdlib.h>
 
-    extern int yylex(void);  // Declaração do lexer
     extern int errors;
+    extern int lines;
+
     extern FILE *yyin;
-    void yyerror(const char *s);  // Função para tratar erros
+    extern int yylex(void);
+
+    void yyerror(const char *s) { printf("Line %d: %s\n", lines, s); }
 %}
 
-/* Definindo os tokens */
-%token CHARACTER STRING INTEGER REAL TYPE IF ELSE WHILE FOR RETURN ID
-%token OPERATOR ASSIGN
+// Verbose errors output
+%define parse.error verbose
+
+// Values
+%token CHARACTER
+%token STRING
+%token INTEGER 
+%token REAL 
+
+// Types
+%token INT_T
+%token STR_T
+%token CHAR_T
+%token FLOAT_T
+
+// Commands
+%token IF 
+%token ELSE 
+%token WHILE 
+%token FOR 
+%token RETURN 
+%token FUNC
+%token RET_T 
+
+// Identifier
+%token ID
+
+// Operators
+%token OPERATOR 
+%token ASSIGN
 %token LOGIC
-%token COLON SEMICOLON RPARENT LPARENT RBRACKET LBRACKET LKEY RKEY
-%start comandos
+
+// Separators
+%token COMMA
+%token SEMICOLON 
+%token RPARENT 
+%token LPARENT 
+%token RBRACKET 
+%token LBRACKET 
+%token LKEY 
+%token RKEY
+
+// Start
+%start func_def
 %%
 
-/* A gramática da sua linguagem vai aqui */
-/*programa:
-    declaracoes comandos
+func_def:
+    | FUNC ID LPARENT param_decl RPARENT RET_T type LKEY commands RETURN value SEMICOLON RKEY func_def
     ;
 
-/*declaracoes:
-    /* Regras para declarações de variáveis, por exemplo */
-    /*| declaracao declaracoes
-    ;*/
-
-
-comandos: 
-    comando comandos 
-    | comando
-    |
+param_decl:
+    | type ID
+    | type ID COMMA param_decl
     ;
 
-comando:
-    declaracao SEMICOLON
-    | atribuicao SEMICOLON
-    | condicional
+type:
+    INT_T
+    | STR_T
+    | CHAR_T
+    | FLOAT_T
     ;
 
-declaracao:
-    TYPE lista_var
-    ;
-
-lista_var:
-    ID 
-    | lista_var COLON ID 
-    | atribuicao 
-    | lista_var COLON atribuicao
-    ;
-
-atribuicao:
-    ID ASSIGN expressao
-    ;
-
-condicional:
-    IF RPARENT condicao LPARENT bloco_comandos
-    ;
-
-condicao:
-    expressao LOGIC expressao
-    ;
-
-bloco_comandos:
-    RKEY comandos LKEY
-    ;
-
-expressao:
-    INTEGER
+value:
+    CHARACTER
+    | STRING
+    | INTEGER
     | REAL
     | ID
-    | expressao OPERATOR expressao
     ;
+
+commands:
+    | command commands
+    ;
+
+command:
+    declaration SEMICOLON
+    | assignment SEMICOLON
+    ;
+
+declaration:
+    type var_list
+    ;
+
+var_list:
+    ID
+    | var_list COMMA ID
+    | assignment
+    | var_list COMMA assignment
+    ;
+
+assignment:
+    ID ASSIGN expression
+    ;
+
+expression:
+    value
+    | value OPERATOR expression
+    ;
+
+// condicional:
+//     IF RPARENT condicao LPARENT bloco_comandos
+//     ;
+// 
+// condicao:
+//     expressao LOGIC expressao
+//     ;
+// 
+// bloco_comandos:
+//     RKEY comandos LKEY
+//     ;
 
 %%
 
-void yyerror(const char *s) {
-    printf("Erro: %s\n", s);
-}
-
-int main(int argc, char **argv) {
-
-    #if YYDEBUG == 1
+#if YYDEBUG == 1
     extern int yydebug;
     yydebug = 1;
-    #endif
+#endif
 
+int main(int argc, char **argv) {
     if ( argc > 0 )
         yyin = fopen(argv[1], "r" );
     else
@@ -95,7 +139,6 @@ int main(int argc, char **argv) {
         yyparse();
     } while (!feof(yyin));
 
-    // Verificar se houve erros
     if (errors == 0)
         printf("Análise concluída com sucesso!\n");
     else

@@ -35,6 +35,8 @@ ELSE         else
 WHILE        while
 FOR          for
 RETURN       return
+FUNC         func
+RET_T        "->"
 
 PLUS         "+"
 MINUS        "-"
@@ -50,14 +52,14 @@ GT           ">"
 GTE          ">="
 
 SPACE        [ \t]
-COLON        ","
+COMMA        ","
 SEMICOLON    ";"
-RPARENT      "("
-LPARENT      ")"
-RBRACKET     "["
-LBRACKET     "]"
-RKEY         "{"
-LKEY         "}"
+LPARENT      "("
+RPARENT      ")"
+LBRACKET     "["
+RBRACKET     "]"
+LKEY         "{"
+RKEY         "}"
 COMMENT      #.*\n
 
 %%
@@ -67,16 +69,18 @@ COMMENT      #.*\n
 {INTEGER}       TOKEN(INTEGER)
 {REAL}          TOKEN(REAL)
 
-{INT_T}         TOKEN(TYPE)
-{STR_T}         TOKEN(TYPE)
-{CHAR_T}        TOKEN(TYPE)
-{FLOAT_T}       TOKEN(TYPE)
+{INT_T}         TOKEN(INT_T)
+{STR_T}         TOKEN(STR_T)
+{CHAR_T}        TOKEN(CHAR_T)
+{FLOAT_T}       TOKEN(FLOAT_T)
 
 {IF}            TOKEN(IF)
 {ELSE}          TOKEN(ELSE)
 {WHILE}         TOKEN(WHILE)
 {FOR}           TOKEN(FOR)
 {RETURN}        TOKEN(RETURN)
+{FUNC}          TOKEN(FUNC)
+{RET_T}         TOKEN(RET_T)
 
 {PLUS}          TOKEN(OPERATOR)
 {MINUS}         TOKEN(OPERATOR)
@@ -92,14 +96,14 @@ COMMENT      #.*\n
 {GTE}           TOKEN(LOGIC)
 
 {SPACE}
-{COLON}         TOKEN(COLON)
+{COMMA}         TOKEN(COMMA)
 {SEMICOLON}     TOKEN(SEMICOLON)
 {RPARENT}       TOKEN(RPARENT)
 {LPARENT}       TOKEN(LPARENT)
 {RBRACKET}      TOKEN(RBRACKET)
 {LBRACKET}      TOKEN(LBRACKET)
-{LKEY}          TOKEN(RBRACKET)
-{RKEY}          TOKEN(LBRACKET)
+{LKEY}          TOKEN(LKEY)
+{RKEY}          TOKEN(RKEY)
 {COMMENT}       { lines++; }
 
 \n              { lines++; }
