@@ -1,9 +1,0 @@
-main() -> int {
-
-    / Comentario
-    teste 0nome = "9andre";
-
-    print(0nome);
-
-    return 0;
-}

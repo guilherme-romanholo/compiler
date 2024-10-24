@@ -19,12 +19,14 @@
 %token STRING
 %token INTEGER 
 %token REAL 
+%token BOOLEAN
 
 // Types
 %token INT_T
 %token STR_T
 %token CHAR_T
 %token FLOAT_T
+%token BOOL_T
 
 // Commands
 %token IF 
@@ -39,9 +41,19 @@
 %token ID
 
 // Operators
-%token OPERATOR 
+%token PLUS
+%token MINUS 
+%token MULT 
+%token DIV 
 %token ASSIGN
-%token LOGIC
+
+// Logical
+%token EQUAL
+%token DIFF
+%token LT
+%token LTE
+%token GT
+%token GTE
 
 // Separators
 %token COMMA
@@ -57,6 +69,7 @@
 %start func_def
 %%
 
+/* Function */
 func_def:
     | FUNC ID LPARENT param_decl RPARENT RET_T type LKEY commands RETURN value SEMICOLON RKEY func_def
     ;
@@ -66,21 +79,7 @@ param_decl:
     | type ID COMMA param_decl
     ;
 
-type:
-    INT_T
-    | STR_T
-    | CHAR_T
-    | FLOAT_T
-    ;
-
-value:
-    CHARACTER
-    | STRING
-    | INTEGER
-    | REAL
-    | ID
-    ;
-
+/* Commands */
 commands:
     | command commands
     ;
@@ -88,8 +87,15 @@ commands:
 command:
     declaration SEMICOLON
     | assignment SEMICOLON
+    | conditional
+    | loop
     ;
 
+command_block:
+    LKEY commands RKEY
+    ;
+
+/* Declaration */
 declaration:
     type var_list
     ;
@@ -107,20 +113,72 @@ assignment:
 
 expression:
     value
-    | value OPERATOR expression
+    | value operator expression
     ;
 
-// condicional:
-//     IF RPARENT condicao LPARENT bloco_comandos
-//     ;
-// 
-// condicao:
-//     expressao LOGIC expressao
-//     ;
-// 
-// bloco_comandos:
-//     RKEY comandos LKEY
-//     ;
+/* If Command */
+conditional:
+    IF LPARENT condition RPARENT command_block
+    | IF LPARENT condition RPARENT command_block ELSE command_block
+    ;
+
+condition:
+    expression
+    | expression logic expression
+    ;
+
+/* Loop Command */
+loop:
+    while_loop
+    for_loop
+    ;
+
+while_loop:
+    WHILE LPARENT condition RPARENT command_block
+    ;
+
+for_loop:
+    FOR LPARENT for_header RPARENT command_block
+    ;
+
+// Multiplas variáveis na declaração, mas apenas uma no assign
+for_header:
+    declaration SEMICOLON condition SEMICOLON assignment
+    ;
+
+/* Groups */
+type:
+    INT_T
+    | STR_T
+    | CHAR_T
+    | FLOAT_T
+    | BOOL_T
+    ;
+
+value:
+    CHARACTER
+    | STRING
+    | INTEGER
+    | REAL
+    | BOOLEAN
+    | ID
+    ;
+
+operator:
+    PLUS
+    | MINUS
+    | MULT
+    | DIV
+    ;
+
+logic:
+    EQUAL
+    | DIFF
+    | LT
+    | LTE
+    | GT
+    | GTE
+    ;
 
 %%
 

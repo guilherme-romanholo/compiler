@@ -23,12 +23,14 @@ CHARACTER    \'({LETTER}|{DIGIT})\'
 STRING       \".*\"
 INTEGER      {DIGIT}+
 REAL         {DIGIT}+[.]{DIGIT}+
+BOOLEAN      (true|false)
 ID           {LETTER}({LETTER}|{DIGIT})*
 
 INT_T        int
 STR_T        string
 CHAR_T       char
 FLOAT_T      float
+BOOL_T       bool
 
 IF           if
 ELSE         else
@@ -68,11 +70,13 @@ COMMENT      #.*\n
 {STRING}        TOKEN(STRING)
 {INTEGER}       TOKEN(INTEGER)
 {REAL}          TOKEN(REAL)
+{BOOLEAN}       TOKEN(BOOLEAN)
 
 {INT_T}         TOKEN(INT_T)
 {STR_T}         TOKEN(STR_T)
 {CHAR_T}        TOKEN(CHAR_T)
 {FLOAT_T}       TOKEN(FLOAT_T)
+{BOOL_T}        TOKEN(BOOL_T)
 
 {IF}            TOKEN(IF)
 {ELSE}          TOKEN(ELSE)
@@ -82,18 +86,18 @@ COMMENT      #.*\n
 {FUNC}          TOKEN(FUNC)
 {RET_T}         TOKEN(RET_T)
 
-{PLUS}          TOKEN(OPERATOR)
-{MINUS}         TOKEN(OPERATOR)
-{MULT}          TOKEN(OPERATOR)
-{DIV}           TOKEN(OPERATOR)
+{PLUS}          TOKEN(PLUS)
+{MINUS}         TOKEN(MINUS)
+{MULT}          TOKEN(MULT)
+{DIV}           TOKEN(DIV)
 {ASSIGN}        TOKEN(ASSIGN)
 
-{EQUAL}         TOKEN(LOGIC)
-{DIFF}          TOKEN(LOGIC)
-{LT}            TOKEN(LOGIC)
-{LTE}           TOKEN(LOGIC)
-{GT}            TOKEN(LOGIC)
-{GTE}           TOKEN(LOGIC)
+{EQUAL}         TOKEN(EQUAL)
+{DIFF}          TOKEN(DIFF)
+{LT}            TOKEN(LT)
+{LTE}           TOKEN(LTE)
+{GT}            TOKEN(GT)
+{GTE}           TOKEN(GTE)
 
 {SPACE}
 {COMMA}         TOKEN(COMMA)

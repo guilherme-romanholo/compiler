@@ -1,9 +1,0 @@
-main() -> int {
-
-    #Declara string
-    string nome = "renata";
-
-    print(determinante_matriz);
-
-    return 0;
-}

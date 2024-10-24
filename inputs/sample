@@ -1,0 +1,39 @@
+# Teste de funcao
+func my_function (int a, char left) -> int 
+{
+  # Teste de declaracoes
+  int id, algo, mais_algo;
+  mais_algo = 3 + dsad - "mais_algo" / 2 ;
+
+  # Teste de declaracoes com atribuicao
+  int id = 3 + "dale";
+  int id = 3 - 2, soma = 2, f = 3 + 24;
+
+  # Teste do If
+  if (a + 2 == 2 + "teste") {
+    int a = 3 + 2;
+    if (a < 2) { a = 2;}
+  }
+
+  # Teste do else
+  else {
+    int l = 2;
+  }
+
+  # Teste do while
+  while (a > 2) {
+    if (teste) {
+      i = 2;
+    }
+  }
+
+  for (int i = false; i < 2; i = i + 2) {
+    if (true) {
+      i = i + 1;
+      bool teste = true;
+    }
+  }
+
+  # Teste de retorno
+  return id; 
+}
