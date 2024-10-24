@@ -138,11 +138,11 @@ while_loop:
     ;
 
 for_loop:
-    FOR LPARENT for_header RPARENT command_block
+    FOR LPARENT for_statement RPARENT command_block
     ;
 
 // Multiplas variáveis na declaração, mas apenas uma no assign
-for_header:
+for_statement:
     declaration SEMICOLON condition SEMICOLON assignment
     ;
 
